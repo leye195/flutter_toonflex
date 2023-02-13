@@ -2,18 +2,31 @@ import 'package:flutter/material.dart';
 
 class SlideRoute extends PageRouteBuilder {
   final Widget page;
-  final String? direction;
+  final String direction;
 
-  SlideRoute({required this.page, this.direction})
+  SlideRoute({required this.page, required this.direction})
       : super(
             pageBuilder: (context, animation, secondaryAnimation) => page,
             transitionsBuilder:
-                (context, animation, secondaryAnimation, child) =>
-                    SlideTransition(
-                        position: Tween(
-                                begin: Offset(direction == 'right' ? -1 : 1, 0),
-                                end: Offset.zero)
-                            .chain(CurveTween(curve: Curves.ease))
-                            .animate(animation),
-                        child: child));
+                (context, animation, secondaryAnimation, child) {
+              final double offsetX =
+                  (direction != 'right' && direction != 'left')
+                      ? 0
+                      : direction == 'right'
+                          ? -1
+                          : 1;
+              final double offsetY =
+                  (direction != 'top' && direction != 'bottom')
+                      ? 0
+                      : direction == 'bottom'
+                          ? -1
+                          : 1;
+
+              return SlideTransition(
+                  position:
+                      Tween(begin: Offset(offsetX, offsetY), end: Offset.zero)
+                          .chain(CurveTween(curve: Curves.ease))
+                          .animate(animation),
+                  child: child);
+            });
 }
