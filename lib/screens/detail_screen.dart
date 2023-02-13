@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toonflix/models/webtoon_detail_model.dart';
 import 'package:toonflix/models/webtoon_episode_model.dart';
 import 'package:toonflix/services/api_service.dart';
@@ -20,12 +21,44 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   late Future<WebtoonDetailModel> webtoon;
   late Future<List<WebtoonEpisodeModel>> episodes;
+  late SharedPreferences pref;
+  bool isLiked = false;
+
+  Future intializePref() async {
+    pref = await SharedPreferences.getInstance();
+    final likedToons = pref.getStringList('likedToons');
+
+    if (likedToons != null && likedToons.contains(widget.id) == true) {
+      setState(() {
+        isLiked = true;
+      });
+      return;
+    }
+
+    pref.setStringList('likedToons', []);
+  }
 
   @override
   void initState() {
     super.initState();
     webtoon = ApiService.getToonById(widget.id);
     episodes = ApiService.getEpisodesById(widget.id);
+    intializePref();
+  }
+
+  void onTabFavourite() async {
+    final likedToons = pref.getStringList('likedToons');
+
+    if (likedToons!.contains(widget.id)) {
+      likedToons.remove(widget.id);
+      isLiked = false;
+    } else {
+      likedToons.add(widget.id);
+      isLiked = true;
+    }
+
+    await pref.setStringList('likedToons', likedToons);
+    setState(() {});
   }
 
   @override
@@ -38,12 +71,21 @@ class _DetailScreenState extends State<DetailScreen> {
               title: Text(widget.title,
                   style: const TextStyle(
                       fontSize: 22,
-                      fontWeight: FontWeight.w400,
+                      fontWeight: FontWeight.w600,
                       shadows: [
                         Shadow(
-                          color: Colors.black45,
+                          blurRadius: 10.0,
+                          color: Colors.black,
                         )
                       ])),
+              actions: [
+                IconButton(
+                  icon: Icon(isLiked == true
+                      ? Icons.favorite
+                      : Icons.favorite_border_outlined),
+                  onPressed: onTabFavourite,
+                )
+              ],
               foregroundColor: innerBoxIsScrolled ? Colors.green : Colors.white,
               backgroundColor: Colors.white,
               elevation: 0.5,
