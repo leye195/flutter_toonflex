@@ -69,12 +69,12 @@ class _DetailScreenState extends State<DetailScreen> {
           return [
             SliverAppBar(
               title: Text(widget.title,
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w600,
                       shadows: [
                         Shadow(
-                          blurRadius: 10.0,
+                          blurRadius: innerBoxIsScrolled ? 0 : 10.0,
                           color: Colors.black,
                         )
                       ])),
