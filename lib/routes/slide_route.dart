@@ -3,9 +3,12 @@ import 'package:flutter/material.dart';
 class SlideRoute extends PageRouteBuilder {
   final Widget page;
   final String direction;
+  final bool? fullScreenDialog;
 
-  SlideRoute({required this.page, required this.direction})
+  SlideRoute(
+      {required this.page, required this.direction, this.fullScreenDialog})
       : super(
+            fullscreenDialog: fullScreenDialog ?? false,
             pageBuilder: (context, animation, secondaryAnimation) => page,
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {

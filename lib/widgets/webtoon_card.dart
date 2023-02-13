@@ -17,7 +17,8 @@ class WebtoonCard extends StatelessWidget {
       Navigator.push(
         context,
         SlideRoute(
-            direction: 'top',
+            fullScreenDialog: true,
+            direction: 'left',
             page: DetailScreen(
               id: webtoon.id,
               title: webtoon.title,
@@ -33,7 +34,7 @@ class WebtoonCard extends StatelessWidget {
       onTap: onTab(context),
       child: Column(
         children: [
-          WebtoonImage(thumb: webtoon.thumb),
+          WebtoonImage(id: webtoon.id, thumb: webtoon.thumb),
           const SizedBox(height: 12),
           Text(
             webtoon.title,
