@@ -117,7 +117,10 @@ class _DetailScreenState extends State<DetailScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           for (var episode in snapshot.data!)
-                            Episode(episode: episode)
+                            Episode(
+                              episode: episode,
+                              webtoonId: widget.id,
+                            ),
                         ],
                       ),
                     );
