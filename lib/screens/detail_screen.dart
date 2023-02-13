@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:toonflix/widgets/webtoon_image.dart';
 
 class DetailScreen extends StatelessWidget {
   final String id;
@@ -18,6 +19,17 @@ class DetailScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0.5,
       ),
+      body: Column(children: [
+        const SizedBox(
+          height: 40,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            WebtoonImage(id: id, thumb: thumb),
+          ],
+        )
+      ]),
     );
   }
 }
